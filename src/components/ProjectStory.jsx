@@ -1,0 +1,17 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import RevealOnScroll from './RevealOnScroll.jsx';
+
+const stories = [
+  { id: 'about', label: 'About the project', eyebrow: 'Purpose', title: 'A focused platform for river stewardship.', text: 'Yamuna Rakshak makes river-side issues visible and actionable. It brings reports, ghat-level mapping, and responsible material recovery into one clear public journey.' },
+  { id: 'problems', label: 'Challenges observed', eyebrow: 'Context', title: 'The details matter at every ghat.', text: 'Litter, sewage discharge, immersion waste, debris, and encroachment affect riverbanks differently. Structured reporting records the issue and its location accurately.' },
+  { id: 'solutions', label: 'Our response', eyebrow: 'Action', title: 'A visible record of local work.', text: 'Photo-assisted reports feed the live ghat map and dashboard. Community members can follow activity and mark reports as cleaned once action is complete.' },
+  { id: 'ecosystem', label: 'The ecosystem', eyebrow: 'Collaboration', title: 'A network built around useful outcomes.', text: 'Residents, volunteers, community organisations, and reuse partners have a clear role. Useful materials can be directed to the right partner through the reuse network.' },
+];
+
+export default function ProjectStory({ onNavigate }) {
+  const [activeId, setActiveId] = useState('about'); const active = stories.find((story) => story.id === activeId) ?? stories[0];
+  const target = active.id === 'solutions' ? '/report' : active.id === 'ecosystem' ? '/reuse' : '/map';
+  return <section id="project" className="bg-white text-[#10283b] py-20 sm:py-28"><div className="max-w-7xl mx-auto px-6"><RevealOnScroll><div className="max-w-2xl"><p className="text-[11px] font-bold tracking-[.18em] uppercase text-[#2f7657]">The project</p><h2 className="font-display text-4xl sm:text-5xl tracking-[-.04em] font-semibold leading-[1.05] mt-4">A long-term approach to a living river.</h2></div></RevealOnScroll><div className="grid lg:grid-cols-[250px_.75fr_1fr] gap-10 lg:gap-16 mt-14 items-start"><div className="border-l border-slate-200" role="tablist" aria-label="Project story">{stories.map((story) => <button key={story.id} type="button" role="tab" aria-selected={story.id === activeId} onClick={() => setActiveId(story.id)} className={`block w-full text-left py-3 pl-5 border-l-2 -ml-px text-sm font-semibold transition-colors ${story.id === activeId ? 'border-[#2f7657] text-[#10283b]' : 'border-transparent text-slate-400 hover:text-slate-700'}`}>{story.label}</button>)}</div><div className="aspect-[4/5] overflow-hidden bg-[#dfe8df]"><img src="/hero.jpg" alt="Community members cleaning a Yamuna ghat" className="h-full w-full object-cover" /></div><motion.div key={active.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .28 }} className="pt-2"><p className="text-[11px] font-bold tracking-[.18em] uppercase text-[#2f7657]">{active.eyebrow}</p><h3 className="font-heading text-3xl sm:text-4xl tracking-[-.045em] leading-tight font-semibold mt-4">{active.title}</h3><p className="text-base leading-relaxed text-slate-600 mt-5">{active.text}</p><button type="button" onClick={() => onNavigate(target)} className="inline-flex items-center gap-2 mt-8 text-sm font-bold text-[#205d87] hover:text-[#2f7657]">Explore the platform <ArrowRight size={16}/></button></motion.div></div></div></section>;
+}
